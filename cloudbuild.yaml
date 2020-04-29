@@ -1,7 +1,7 @@
 steps:
-  - name: maven:3.6.3-openjdk-11-slim
+  - name: maven:3-openjdk-11
     entrypoint: 'mvn'
-    args: ['package']
+    args: ["package"]
   - name: gcr.io/cloud-builders/docker
     args: ["build", "-t", "gcr.io/$PROJECT_ID/gcp-vehicle", "."]
 images: ["gcr.io/$PROJECT_ID/gcp-vehicle"]
