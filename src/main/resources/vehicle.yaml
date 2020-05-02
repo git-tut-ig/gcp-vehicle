@@ -1,0 +1,279 @@
+swagger: "2.0"
+info:
+  description: "Vehicle microservice contract description"
+  version: "1.0.0"
+  title: "Vehicle service"
+  contact:
+    email: "example@example.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+basePath: "/v1"
+schemes:
+  - "https"
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /sc:
+    get:
+      tags:
+        - "service-center"
+      summary: "Retrieves all service centres"
+      operationId: "listSc"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceCenter"
+    post:
+      tags:
+        - "service-center"
+      summary: "Add a new service center"
+      description: ""
+      operationId: "addSc"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Service center object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ServiceCenter"
+      responses:
+        201:
+          description: "service center successfully created"
+          schema:
+            $ref: "#/definitions/ServiceCenter"
+        405:
+          description: "Invalid input"
+    put:
+      tags:
+        - "service-center"
+      summary: "Update an existing service center"
+      description: ""
+      operationId: "updateSc"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Service center object that needs to be updated to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ServiceCenter"
+      responses:
+        201:
+          description: "service center successfully updated"
+          schema:
+            $ref: "#/definitions/ServiceCenter"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Pet not found"
+        405:
+          description: "Validation exception"
+  /sc/{id}:
+    get:
+      tags:
+        - "service-center"
+      summary: "Find service center by ID"
+      description: "Returns a single service center"
+      operationId: "getScById"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of service center"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ServiceCenter"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Sc not found"
+    delete:
+      tags:
+        - "service-center"
+      summary: "Deletes a service center"
+      description: ""
+      operationId: "deleteSc"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Service center id to delete"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Service center has been deleted"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Service center not found"
+  /sc-employee/findBySc:
+    get:
+      tags:
+        - "sc-employee"
+      summary: "Retrieves all employees of particular service centre"
+      operationId: "findEmployeeBySc"
+      parameters:
+        - name: "sc"
+          in: "query"
+          description: "service center id"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ScEmployee"
+        400:
+          description: "Invalid service center id supplied"
+  /sc-employee/{id}:
+    get:
+      tags:
+        - "sc-employee"
+      summary: "Find employee of service center by ID"
+      description: "Returns a single employee"
+      operationId: "getEmployeeById"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of employee"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ScEmployee"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Employee not found"
+    delete:
+      summary: "Deletes an employee"
+      description: ""
+      operationId: "deleteEmployee"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Employee id to delete"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Employee has been deleted"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Service center not found"
+  /sc-employee:
+    post:
+      summary: "Add a new employee"
+      description: ""
+      operationId: "addEmployee"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Employee object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ScEmployee"
+      responses:
+        201:
+          description: "service center successfully created"
+          schema:
+            $ref: "#/definitions/ScEmployee"
+        405:
+          description: "Invalid input"
+    put:
+      summary: "Update an existing employee"
+      description: ""
+      operationId: "updateEmployee"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Employeer object that needs to be updated to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ScEmployee"
+      responses:
+        201:
+          description: "service center successfully updated"
+          schema:
+            $ref: "#/definitions/ScEmployee"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Employee not found"
+        405:
+          description: "Validation exception"
+definitions:
+  ServiceCenter:
+    type: "object"
+    required:
+      - "name"
+      - "location"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "Идентификатор сервисного центра"
+      name:
+        type: "string"
+        description: "Наименование"
+      location:
+        type: "string"
+        default: "London"
+        description: >
+          Локация сервисного центра.
+          По мере развития контракта будет заменена ссылкой на соответствующий объект.
+      description:
+        type: "string"
+        description: "Описание"
+      employees:
+        type: array
+        items:
+          $ref: "#/definitions/ScEmployee"
+    example:
+      id: 123
+      name: "Service centre in London"
+      location: "London"
+      description: "Sample description"
+  ScEmployee:
+    type: "object"
+    required:
+      - "username"
+      - "firstName"
+      - "service-center"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+        description: "Имя пользователя"
+      firstName:
+        type: "string"
+        description: "Имя"
+      lastName:
+        type: "string"
+        description: "Фамилия"
+      service-center:
+        $ref: "#/definitions/ServiceCenter"
+
+
+
