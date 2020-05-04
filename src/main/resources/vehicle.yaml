@@ -17,6 +17,46 @@ consumes:
 produces:
   - "application/json"
 paths:
+  /sc/hc-mig:
+    get:
+      tags:
+        - "service-center"
+      summary: "Managed instance group health check"
+      operationId: "hcMig"
+      responses:
+        200:
+          description: "successful operation"
+        503:
+          description: "health check failed"
+    post:
+      tags:
+        - "service-center"
+      summary: "Trigger MIG health check"
+      description: ""
+      operationId: "triggerHcMig"
+      responses:
+        200:
+          description: "Trigger MIG health check"
+  /sc/hc-lb:
+    get:
+      tags:
+        - "service-center"
+      summary: "Load-balancer health check"
+      operationId: "hcLb"
+      responses:
+        200:
+          description: "successful operation"
+        503:
+          description: "health check failed"
+    post:
+      tags:
+        - "service-center"
+      summary: "Trigger load-balancer health check"
+      description: ""
+      operationId: "triggerHcLb"
+      responses:
+        200:
+          description: "Trigger MIG health check"
   /sc:
     get:
       tags:
@@ -74,6 +114,14 @@ paths:
           description: "Pet not found"
         405:
           description: "Validation exception"
+    delete:
+      tags:
+        - "service-center"
+      summary: "Deletes all service cneters"
+      operationId: "deleteAllSc"
+      responses:
+        201:
+          description: "all service centers successfully deleted"
   /sc/{id}:
     get:
       tags:
