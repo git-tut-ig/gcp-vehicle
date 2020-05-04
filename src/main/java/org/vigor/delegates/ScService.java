@@ -96,6 +96,7 @@ public class ScService implements ScApi {
 
     @Override
     public ResponseEntity<Void> deleteAllSc() {
+        HighLoadGenerator.loadCpu();
         storage.clear();
         return ResponseEntity
                 .ok()
